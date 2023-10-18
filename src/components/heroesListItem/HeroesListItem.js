@@ -18,7 +18,7 @@ const HeroesListItem = ({name, description, element, onDelete}) => {
         default:
             elementClassName = 'bg-warning bg-gradient';
     }
-
+    
     return (
         <li 
             className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}>

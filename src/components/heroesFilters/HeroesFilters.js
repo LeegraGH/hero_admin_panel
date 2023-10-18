@@ -14,20 +14,19 @@ import { translateFilter } from "../../utils";
 import classNames from "classnames";
 
 const HeroesFilters = () => {
-    const { filters } = useSelector(state => state);
+    const { filters } = useSelector(state => state.filters);
     const dispatch = useDispatch();
 
     const { request } = useHttp();
 
     const [activeBtn, setActiveBtn] = useState("all");
 
-
     useEffect(() => {
         dispatch(filtersFetching());
         request("http://localhost:3001/filters")
             .then((data) => dispatch(filtersFetched(data)))
             .catch(dispatch(filtersFetchingError()));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
@@ -39,7 +38,7 @@ const HeroesFilters = () => {
         request(`http://localhost:3001/heroes${element}`)
             .then((data) => dispatch(heroesFetched(data)))
             .catch(dispatch(heroesFetchingError()));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line
     }, [activeBtn]);
 
     const onBtnClick = (e) => {

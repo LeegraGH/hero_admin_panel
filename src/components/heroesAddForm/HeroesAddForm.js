@@ -15,8 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 import { v4 as uuidv4 } from 'uuid';
 
-import {translateFilter} from "../../utils";
-import {heroesFetching, heroesFetched, heroesFetchingError} from "../../actions";
+import { translateFilter } from "../../utils";
+import { heroesFetching, heroesFetched, heroesFetchingError } from "../../actions";
 
 
 const HeroesAddForm = () => {
@@ -26,12 +26,13 @@ const HeroesAddForm = () => {
         description: "",
         element: ""
     });
-    const {heroes, filters} = useSelector(state => state);
+    const { heroes } = useSelector(state => state.heroes);
+    const { filters } = useSelector(state => state.filters);
     const dispatch = useDispatch();
-    const {request} = useHttp();
-    
-    const onChangeHero=(e)=>{
-        setHero(hero=>{
+    const { request } = useHttp();
+
+    const onChangeHero = (e) => {
+        setHero(hero => {
             return {
                 ...hero,
                 [e.target.name]: e.target.value
@@ -39,15 +40,15 @@ const HeroesAddForm = () => {
         });
     }
 
-    const onSubmitHero=(e)=>{
+    const onSubmitHero = (e) => {
         e.preventDefault();
         dispatch(heroesFetching());
         request("http://localhost:3001/heroes", "POST", JSON.stringify(hero))
-        .then(()=>dispatch(heroesFetched([
-            ...heroes,
-            hero
-        ])))
-        .catch(()=>dispatch(heroesFetchingError()));
+            .then(() => dispatch(heroesFetched([
+                ...heroes,
+                hero
+            ])))
+            .catch(() => dispatch(heroesFetchingError()));
         setHero({
             id: uuidv4(),
             name: "",
@@ -57,20 +58,20 @@ const HeroesAddForm = () => {
     }
 
     const onSelectLoaded = () => {
-        const values = filters.filter(filter => filter!=="all").map((filter, i) => {
+        const values = filters.filter(filter => filter !== "all").map((filter, i) => {
             return <option key={i} value={filter}>{translateFilter(filter)}</option>
         });
 
         return (
-            <select 
+            <select
                 required
-                className="form-select" 
-                id="element" 
+                className="form-select"
+                id="element"
                 name="element"
                 value={hero.element}
                 onChange={onChangeHero}
-                >
-                <option disabled>Я владею элементом...</option>
+            >
+                <option value="">Я владею элементом...</option>
                 {values}
             </select>
         )
@@ -81,28 +82,28 @@ const HeroesAddForm = () => {
         <form className="border p-4 shadow-lg rounded" method="POST" onSubmit={onSubmitHero}>
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
-                <input 
+                <input
                     required
-                    type="text" 
-                    name="name" 
-                    className="form-control" 
-                    id="name" 
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    id="name"
                     placeholder="Как меня зовут?"
                     value={hero.name}
-                    onChange={onChangeHero}/>
+                    onChange={onChangeHero} />
             </div>
 
             <div className="mb-3">
                 <label htmlFor="text" className="form-label fs-4">Описание</label>
                 <textarea
                     required
-                    name="description" 
-                    className="form-control" 
-                    id="text" 
+                    name="description"
+                    className="form-control"
+                    id="text"
                     placeholder="Что я умею?"
-                    style={{"height": '130px'}}
+                    style={{ "height": '130px' }}
                     value={hero.description}
-                    onChange={onChangeHero}/>
+                    onChange={onChangeHero} />
             </div>
 
             <div className="mb-3">
