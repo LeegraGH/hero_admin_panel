@@ -22,10 +22,10 @@ const HeroesFilters = () => {
     const [activeBtn, setActiveBtn] = useState("all");
 
     useEffect(() => {
-        dispatch(filtersFetching());
+        dispatch("FILTERS_FETCHING");
         request("http://localhost:3001/filters")
             .then((data) => dispatch(filtersFetched(data)))
-            .catch(dispatch(filtersFetchingError()));
+            .catch(()=>dispatch(filtersFetchingError()));
         // eslint-disable-next-line
     }, []);
 
@@ -37,7 +37,7 @@ const HeroesFilters = () => {
         dispatch(heroesFetching());
         request(`http://localhost:3001/heroes${element}`)
             .then((data) => dispatch(heroesFetched(data)))
-            .catch(dispatch(heroesFetchingError()));
+            .catch(()=>dispatch(heroesFetchingError()));
         // eslint-disable-next-line
     }, [activeBtn]);
 
