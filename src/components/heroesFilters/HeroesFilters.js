@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 
-import { fetchFilters, fetchHeroes } from "../../actions";
+import { fetchFilters, fetchHeroes } from "../../redux/actions";
 import { translateFilter } from "../../utils";
 import classNames from "classnames";
 

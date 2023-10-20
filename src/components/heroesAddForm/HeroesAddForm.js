@@ -14,7 +14,7 @@ import { useHttp } from "../../hooks/http.hook";
 import { v4 as uuidv4 } from 'uuid';
 
 import { translateFilter } from "../../utils";
-import { heroesFetching, heroesFetched, heroesFetchingError } from "../../actions";
+import {heroesFetching, heroesFetched, heroesFetchingError} from "../../redux/slice/heroesSlice";
 
 
 const HeroesAddForm = () => {
