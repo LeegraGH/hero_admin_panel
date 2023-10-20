@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 
-import { filtersFetching, filtersFetched, filtersFetchingError, heroesFetching, heroesFetched, heroesFetchingError } from "../../actions";
+import { fetchFilters, fetchHeroes } from "../../actions";
 import { translateFilter } from "../../utils";
 import classNames from "classnames";
 
@@ -22,10 +22,7 @@ const HeroesFilters = () => {
     const [activeBtn, setActiveBtn] = useState("all");
 
     useEffect(() => {
-        dispatch("FILTERS_FETCHING");
-        request("http://localhost:3001/filters")
-            .then((data) => dispatch(filtersFetched(data)))
-            .catch(()=>dispatch(filtersFetchingError()));
+        dispatch(fetchFilters(request));
         // eslint-disable-next-line
     }, []);
 
@@ -34,10 +31,7 @@ const HeroesFilters = () => {
         if (activeBtn !== "all") {
             element = `?element=${activeBtn}`;
         }
-        dispatch(heroesFetching());
-        request(`http://localhost:3001/heroes${element}`)
-            .then((data) => dispatch(heroesFetched(data)))
-            .catch(()=>dispatch(heroesFetchingError()));
+        dispatch(fetchHeroes(request, element));
         // eslint-disable-next-line
     }, [activeBtn]);
 
