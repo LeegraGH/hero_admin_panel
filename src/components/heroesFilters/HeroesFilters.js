@@ -7,9 +7,9 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
 
-import { fetchFilters, fetchHeroes } from "../../redux/actions";
+import { fetchHeroes } from "../../redux/slice/heroesSlice";
+import { fetchFilters } from "../../redux/slice/filtersSlice";
 import { translateFilter } from "../../utils";
 import classNames from "classnames";
 
@@ -17,12 +17,10 @@ const HeroesFilters = () => {
     const { filters } = useSelector(state => state.filters);
     const dispatch = useDispatch();
 
-    const { request } = useHttp();
-
     const [activeBtn, setActiveBtn] = useState("all");
 
     useEffect(() => {
-        dispatch(fetchFilters(request));
+        dispatch(fetchFilters());
         // eslint-disable-next-line
     }, []);
 
@@ -31,7 +29,7 @@ const HeroesFilters = () => {
         if (activeBtn !== "all") {
             element = `?element=${activeBtn}`;
         }
-        dispatch(fetchHeroes(request, element));
+        dispatch(fetchHeroes(element));
         // eslint-disable-next-line
     }, [activeBtn]);
 
