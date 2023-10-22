@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from 'uuid';
 
 import { useHttp } from "../../hooks/http.hook";
 
@@ -10,24 +11,31 @@ export const fetchFilters = createAsyncThunk(
     }
 )
 
+const filtersAdapter = createEntityAdapter({
+    selectId: () => uuidv4()
+});
+
+const initialState = filtersAdapter.getInitialState({
+    filtersLoadingStatus: 'idle'
+});
+
 const filtersSlice = createSlice({
     name: 'filters',
-    initialState: {
-        filters: [],
-        filtersLoadingStatus: 'idle'
-    },
+    initialState,
     extraReducers: (builder) => {
         builder
             .addCase(fetchFilters.pending, (state) => { state.filtersLoadingStatus = 'loading' })
             .addCase(fetchFilters.fulfilled, (state, action) => {
                 state.filtersLoadingStatus = "idle";
-                state.filters = action.payload;
+                filtersAdapter.setAll(state, action.payload);
             })
             .addCase(fetchFilters.rejected, (state) => { state.filtersLoadingStatus = 'error' })
     }
 });
 
 const { actions, reducer } = filtersSlice;
+
+export const {selectAll} = filtersAdapter.getSelectors(state => state.filters);
 
 export default reducer;
 export const {

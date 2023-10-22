@@ -9,12 +9,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchHeroes } from "../../redux/slice/heroesSlice";
-import { fetchFilters } from "../../redux/slice/filtersSlice";
+import { fetchFilters, selectAll } from "../../redux/slice/filtersSlice";
 import { translateFilter } from "../../utils";
 import classNames from "classnames";
 
 const HeroesFilters = () => {
-    const { filters } = useSelector(state => state.filters);
+    const filters = useSelector(selectAll);
     const dispatch = useDispatch();
 
     const [activeBtn, setActiveBtn] = useState("all");

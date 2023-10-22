@@ -14,7 +14,8 @@ import { useHttp } from "../../hooks/http.hook";
 import { v4 as uuidv4 } from 'uuid';
 
 import { translateFilter } from "../../utils";
-import {heroesFetching, heroesFetched, heroesFetchingError} from "../../redux/slice/heroesSlice";
+import {heroCreated} from "../../redux/slice/heroesSlice";
+import {selectAll} from "../../redux/slice/filtersSlice";
 
 
 const HeroesAddForm = () => {
@@ -24,8 +25,8 @@ const HeroesAddForm = () => {
         description: "",
         element: ""
     });
-    const { heroes } = useSelector(state => state.heroes);
-    const { filters } = useSelector(state => state.filters);
+
+    const filters = useSelector(selectAll);
     const dispatch = useDispatch();
     const { request } = useHttp();
 
@@ -40,13 +41,9 @@ const HeroesAddForm = () => {
 
     const onSubmitHero = (e) => {
         e.preventDefault();
-        dispatch(heroesFetching());
         request("http://localhost:3001/heroes", "POST", JSON.stringify(hero))
-            .then(() => dispatch(heroesFetched([
-                ...heroes,
-                hero
-            ])))
-            .catch(() => dispatch(heroesFetchingError()));
+            .then(() => dispatch(heroCreated(hero)))
+            .catch((error) => console.log(error));
         setHero({
             id: uuidv4(),
             name: "",

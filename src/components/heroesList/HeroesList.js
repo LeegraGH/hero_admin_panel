@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
-import {heroesFetching, heroesFetched, heroesFetchingError} from '../../redux/slice/heroesSlice';
+import {heroDeleted, selectAll} from '../../redux/slice/heroesSlice';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
@@ -11,18 +11,18 @@ import {heroesFetching, heroesFetched, heroesFetchingError} from '../../redux/sl
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus} = useSelector(state => state.heroes);
+    const {heroesLoadingStatus} = useSelector(state => state.heroes);
+    const heroes = useSelector(selectAll);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
     const onDeleteItem = (id) => {
-        dispatch(heroesFetching());
         request(`http://localhost:3001/heroes/${id}`,"DELETE")
             .then(() => {
-                const data = heroes.filter(hero => hero.id !== id);
-                dispatch(heroesFetched(data));
+                // const data = heroes.filter(hero => hero.id !== id);
+                dispatch(heroDeleted(id));
             })
-            .catch(() => dispatch(heroesFetchingError()));
+            .catch((error) => console.log(error));
     }
 
     if (heroesLoadingStatus === "loading") {
