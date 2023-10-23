@@ -23,15 +23,6 @@ const HeroesFilters = () => {
         // eslint-disable-next-line
     }, []);
 
-    // useEffect(() => {
-    //     let element = "";
-    //     if (activeBtn !== "all") {
-    //         element = `?element=${activeBtn}`;
-    //     }
-    //     dispatch(fetchHeroes(element));
-    //     // eslint-disable-next-line
-    // }, [activeBtn]);
-
     const onBtnClick = (e) => {
         dispatch(activeFilterUpdated(e.target.name));
     }

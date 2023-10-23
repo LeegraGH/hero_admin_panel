@@ -31,7 +31,6 @@ const HeroesList = () => {
     const onDeleteItem = (id) => {
         request(`http://localhost:3001/heroes/${id}`,"DELETE")
             .then(() => {
-                // const data = heroes.filter(hero => hero.id !== id);
                 dispatch(heroDeleted(id));
             })
             .catch((error) => console.log(error));
