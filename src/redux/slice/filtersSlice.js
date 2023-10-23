@@ -16,12 +16,16 @@ const filtersAdapter = createEntityAdapter({
 });
 
 const initialState = filtersAdapter.getInitialState({
-    filtersLoadingStatus: 'idle'
+    filtersLoadingStatus: 'idle',
+    activeFilter: 'all'
 });
 
 const filtersSlice = createSlice({
     name: 'filters',
     initialState,
+    reducers: {
+        activeFilterUpdated: (state, action) => {state.activeFilter=action.payload}
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchFilters.pending, (state) => { state.filtersLoadingStatus = 'loading' })
@@ -38,8 +42,4 @@ const { actions, reducer } = filtersSlice;
 export const {selectAll} = filtersAdapter.getSelectors(state => state.filters);
 
 export default reducer;
-export const {
-    filtersFetching,
-    filtersFetched,
-    filtersFetchingError
-} = actions;
+export const {activeFilterUpdated} = actions;

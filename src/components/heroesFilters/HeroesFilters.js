@@ -5,43 +5,42 @@
 // Изменять json-файл для удобства МОЖНО!
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchHeroes } from "../../redux/slice/heroesSlice";
-import { fetchFilters, selectAll } from "../../redux/slice/filtersSlice";
+import { fetchFilters, activeFilterUpdated, selectAll } from "../../redux/slice/filtersSlice";
 import { translateFilter } from "../../utils";
 import classNames from "classnames";
 
 const HeroesFilters = () => {
-    const filters = useSelector(selectAll);
-    const dispatch = useDispatch();
 
-    const [activeBtn, setActiveBtn] = useState("all");
+    const filters = useSelector(selectAll);
+    const activeFilter = useSelector(state => state.filters.activeFilter);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchFilters());
         // eslint-disable-next-line
     }, []);
 
-    useEffect(() => {
-        let element = "";
-        if (activeBtn !== "all") {
-            element = `?element=${activeBtn}`;
-        }
-        dispatch(fetchHeroes(element));
-        // eslint-disable-next-line
-    }, [activeBtn]);
+    // useEffect(() => {
+    //     let element = "";
+    //     if (activeBtn !== "all") {
+    //         element = `?element=${activeBtn}`;
+    //     }
+    //     dispatch(fetchHeroes(element));
+    //     // eslint-disable-next-line
+    // }, [activeBtn]);
 
     const onBtnClick = (e) => {
-        setActiveBtn(e.target.name);
+        dispatch(activeFilterUpdated(e.target.name));
     }
 
     const onButtonsLoaded = () => {
         const values = filters.map((filter, i) => {
             const btnClass = classNames({
                 btn: true,
-                active: activeBtn === filter,
+                active: activeFilter === filter,
                 "btn-outline-dark": filter === "all",
                 "btn-danger": filter === "fire",
                 "btn-primary": filter === "water",

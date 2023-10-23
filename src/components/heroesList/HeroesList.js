@@ -1,8 +1,10 @@
 import {useHttp} from '../../hooks/http.hook';
+import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
+import { fetchHeroes } from '../../redux/slice/heroesSlice';
 import {heroDeleted, selectAll} from '../../redux/slice/heroesSlice';
 
 // Задача для этого компонента:
@@ -13,8 +15,18 @@ import {heroDeleted, selectAll} from '../../redux/slice/heroesSlice';
 const HeroesList = () => {
     const {heroesLoadingStatus} = useSelector(state => state.heroes);
     const heroes = useSelector(selectAll);
+    const activeFilter = useSelector(state=>state.filters.activeFilter);
     const dispatch = useDispatch();
     const {request} = useHttp();
+
+    useEffect(() => {
+        let element = "";
+        if (activeFilter !== "all") {
+            element = `?element=${activeFilter}`;
+        }
+        dispatch(fetchHeroes(element));
+        // eslint-disable-next-line
+    }, [activeFilter]);
 
     const onDeleteItem = (id) => {
         request(`http://localhost:3001/heroes/${id}`,"DELETE")
