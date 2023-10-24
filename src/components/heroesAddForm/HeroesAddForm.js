@@ -9,13 +9,12 @@
 // данных из фильтров
 
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
+import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { translateFilter } from "../../utils";
-import {heroCreated} from "../../redux/slice/heroesSlice";
 import {selectAll} from "../../redux/slice/filtersSlice";
+import { useCreateHeroMutation } from "../../api/apiSlice";
 
 
 const HeroesAddForm = () => {
@@ -26,9 +25,9 @@ const HeroesAddForm = () => {
         element: ""
     });
 
+    const [createHero] = useCreateHeroMutation();
+
     const filters = useSelector(selectAll);
-    const dispatch = useDispatch();
-    const { request } = useHttp();
 
     const onChangeHero = (e) => {
         setHero(hero => {
@@ -41,9 +40,7 @@ const HeroesAddForm = () => {
 
     const onSubmitHero = (e) => {
         e.preventDefault();
-        request("http://localhost:3001/heroes", "POST", JSON.stringify(hero))
-            .then(() => dispatch(heroCreated(hero)))
-            .catch((error) => console.log(error));
+        createHero(hero).unwrap();
         setHero({
             id: uuidv4(),
             name: "",
