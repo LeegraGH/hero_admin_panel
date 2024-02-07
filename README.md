@@ -1,1 +1,5 @@
-This is test project with hero admin panel!
+# Административная панель героев
+## Тестовый проект, написанный на React с использованием Redux Toolkit и хранением данных на локальном сервере JSON Server
+---
+### Вид приложения
+![Изображение](https://github.com/LeegraGH/hero_admin_panel/assets/94003025/b318b580-528f-42cd-a24f-5185ccc5677a)
