@@ -1,4 +1,6 @@
-const HeroesListItem = ({name, description, element, onDelete}) => {
+import character from "../../assets/character-icon.png";
+
+const HeroesListItem = ({ name, description, element, onDelete }) => {
 
     let elementClassName;
 
@@ -18,16 +20,16 @@ const HeroesListItem = ({name, description, element, onDelete}) => {
         default:
             elementClassName = 'bg-warning bg-gradient';
     }
-    
+
     return (
-        <li 
+        <li
             className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}>
-            <img src="http://www.stpaulsteinbach.org/wp-content/uploads/2014/09/unknown-hero.jpg" 
-                className="img-fluid w-25 d-inline" 
-                alt="unknown hero" 
-                style={{'objectFit': 'cover'}}/>
+            <img src={character}
+                className="img-fluid w-25 d-inline"
+                alt="unknown hero"
+                style={{ 'objectFit': 'cover', 'borderRadius': '5px' }} />
             <div className="card-body">
-                
+
                 <h3 className="card-title">{name}</h3>
                 <p className="card-text">{description}</p>
             </div>
